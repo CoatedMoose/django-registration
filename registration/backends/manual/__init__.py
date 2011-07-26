@@ -41,7 +41,13 @@ class ManualActivation(object):
         class of this backend as the sender.
 
         """
-        username, email, password = kwargs['username'], kwargs['email'], kwargs['password1']
+
+        username, email, password
+        if getattr(settings, 'EMAIL_AS_USERNAME', False):
+            username, email, password = kwargs['email'], kwargs['email'], kwargs['password1']
+        else:
+            username, email, password = kwargs['username'], kwarg['email'], kwargs['password1']
+
         if Site._meta.installed:
             site = Site.objects.get_current()
         else:
